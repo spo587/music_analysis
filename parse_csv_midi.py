@@ -1,6 +1,5 @@
 import math
 import copy
-import itertools as i
 
 def parse_file_init(filename):
     f = open(filename)
@@ -89,9 +88,7 @@ def voice_w_scale_degs(voice_with_no_rests,filename):
         else:
             voice_copy[i][0].append(-1) #for goin down
     for entry in voice_copy:
-        entry.remove(entry[1])
-
-        
+        entry.remove(entry[1]) 
 
     return voice_copy
 
@@ -117,8 +114,6 @@ def make_voice_into_grams(voice_with_no_rests):
             print voice_copy[i+1][0],voice_copy[i][0]
 
     return voice_copy
-
-
 
 
 def make_voices(filename):
@@ -159,15 +154,6 @@ def find_prelude_end(voices):
 
 
 
-
-
-
-def find_longest_rest(rest_intervals):
-    rest_lengths = []
-    for entry in rest_intervals:
-        rest_lengths.append(entry[1]-entry[0])
-    index = rest_lengths.index(max(rest_lengths))
-    return rest_intervals[index][0],max(rest_lengths)
 
 
 
