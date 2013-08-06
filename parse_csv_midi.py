@@ -54,14 +54,71 @@ def parse_voice(filename,voicenum):
             first_voice.remove(first_voice[i])
 
     for i in range(len(first_voice)):
-        first_voice[i][0] = first_voice[i][0]/256.0
+        first_voice[i][0] = first_voice[i][0]
     return first_voice
 
+def voice_w_scale_degs(voice_with_no_rests,filename):
+    voice_copy = copy.deepcopy(voice_with_no_rests)
+    key_list = get_key_sig(filename)
+    for entry in voice_copy:
+        index = voice_copy.index(entry)
+        for i in range(len(key_list[0])-1,-1,-1):
+            note_num = key_list[0][i]
+            potensh = entry[1]%note_num
+            if potensh < 12:
+                entry.append(potensh)
+                break
+    #change pitch information to up or down
+    for i in range(1,len(voice_copy)-1):
+        # getting rid of rhythm info, for now, by assigning to 0th entry
+        voice_copy[i][0] = []
+        note_before = voice_copy[i-1][1]
+        note = voice_copy[i][1]
+        note_after = voice_copy[i+1][1]
+        if note_before < note:
+            voice_copy[i][0].append(1) #for below
+        elif note_before == note:
+            voice_copy[i][0].append(0)
+        else:
+            voice_copy[i][0].append(1) #for above
+        if note_after > note:
+            voice_copy[i][0].append(1) #for goin up
+        elif voice_copy[i-1][1] == voice_copy[i][1]:
+            voice_copy[i][0].append(0)
+        else:
+            voice_copy[i][0].append(-1) #for goin down
+    for entry in voice_copy:
+        entry.remove(entry[1])
 
-def make_voice_into_grams(voice):
-    for i in range(len(voice)+1):
-        voice[i][0] = voice[i+1][0] - voice[i][0]
-        voice[i][1] = voice[i+1][1] - voice[i][1]
+        
+
+    return voice_copy
+
+
+
+
+def eliminate_rests_from_voice(voice):
+    voice_copy = copy.deepcopy(voice)
+    for i in range(len(voice_copy)-1,-1,-1):
+        if voice_copy[i][1] == 1:
+            voice_copy.remove(voice_copy[i])
+    return voice_copy
+
+def make_voice_into_grams(voice_with_no_rests):
+    voice_copy = copy.deepcopy(voice_with_no_rests)
+    for i in range(len(voice_copy)-1):
+        voice_copy[i][0] = voice_copy[i+1][0] - voice_copy[i][0]
+        voice_copy[i][1] = voice_copy[i+1][1] - voice_copy[i][1]   
+    for i in range(len(voice_copy)-1):
+        try:
+            voice_copy[i][0] = round(math.log((voice_copy[i+1][0]/float(voice_copy[i][0])),2),2)
+        except ValueError:
+            print voice_copy[i+1][0],voice_copy[i][0]
+
+    return voice_copy
+
+
+
 
 def make_voices(filename):
     voices = []
