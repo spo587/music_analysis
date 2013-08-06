@@ -33,10 +33,31 @@ def parse_file(filename,voicenum):
                 first_voice[i].remove(first_voice[i][j])  
 
     for i in range(len(first_voice)-1,-1,-1):
-        if first_voice[i][-1] == 0:
-            first_voice.remove(first_voice[i]) 
+        if first_voice[i][-1] == 0 or first_voice[i][0] < 100:
+            first_voice.remove(first_voice[i])
 
-
-
+    for i in range(len(first_voice)):
+        first_voice[i][0] = first_voice[i][0]/256.0
     return first_voice
+
+
+def make_voice_into_grams(voice):
+    for i in range(len(voice)+1):
+        voice[i][0] = voice[i+1][0] - voice[i][0]
+        voice[i][1] = voice[i+1][1] - voice[i][1]
+
+def make_voices(filename):
+    voices = []
+    for i in range(1,8):
+        new_voice = parse_file(filename,i)
+        if len(new_voice) > 0:
+            voices.append(new_voice)
+    return voices
+
+def find_break(filename):
+    '''to find the fugue in a prelude and fugue'''
+    voices = make_voices(filename)
+
+
+
 
