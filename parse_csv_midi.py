@@ -1,14 +1,31 @@
+import math
+import copy
 
-
-def parse_file(filename,voicenum):
+def parse_file_init(filename):
     f = open(filename)
     r = f.readlines()
+    for s in r:
+        s = s.split(', ')
+            
+    return r
+
+def get_key_sig(filename):
+    r = parse_file_init(filename)
+    print r[0:10]
+    for s in r:
+        s = s.split(', ')
+        if s[2] == 'Key_signature':
+            print 'boomtown'
+            key_sig_compare_notes = [[(int(s[3])+12*i) for i in range(8)],s[4][1:6]]
+            break 
+    return key_sig_compare_notes
+
+def parse_voice(filename,voicenum):
+    r = parse_file_init(filename)
     first_voice = []
     for s in r:
         if s[0] == str(voicenum+1):
             first_voice.append(s)
-    print first_voice[0:10]
-    indices_to_remove = []
     for i in range(len(first_voice)):
         first_voice[i] = first_voice[i].split(', ')
         if len(first_voice[i]) == 6:
