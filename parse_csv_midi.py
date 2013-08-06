@@ -1,5 +1,6 @@
 import math
 import copy
+import itertools as i
 
 def parse_file_init(filename):
     f = open(filename)
@@ -32,7 +33,7 @@ def parse_voice(filename,voicenum):
             first_voice[i].remove(first_voice[i][5])
             first_voice[i].remove(first_voice[i][3])
             first_voice[i].remove(first_voice[i][0])
-    print first_voice[0:10]
+
 
     for i in range(len(first_voice)-1,-1,-1):
         if first_voice[i][1][0:8] == 'Note_off' and int(first_voice[i+1][0])!= int(first_voice[i][0]):
