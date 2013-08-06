@@ -18,7 +18,10 @@ def parse_file(filename,voicenum):
     print first_voice[0:10]
 
     for i in range(len(first_voice)-1,-1,-1):
-        if first_voice[i][1][0:8] == 'Note_off':
+        if first_voice[i][1][0:8] == 'Note_off' and int(first_voice[i+1][0])!= int(first_voice[i][0]):
+            # change note offset entry to rest entry
+            first_voice[i] = [int(first_voice[i][0]),1]
+        elif first_voice[i][1][0:8] == 'Note_off':
             first_voice.remove(first_voice[i])
 
 
