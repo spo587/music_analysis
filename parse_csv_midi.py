@@ -169,34 +169,7 @@ def find_longest_rest(rest_intervals):
     return rest_intervals[index][0],max(rest_lengths)
 
 
-def find_break(filename):
-    '''to find the fugue in a prelude and fugue, for instance. will look for places where
-    multiple voices are resting'''
-    voices = make_voices(filename)
-    ls_of_rests = [rest_intervals(voice) for voice in voices]
-    longest_rests = [find_longest_rest(rest_intervals) for rest_intervals in ls_of_rests]
-    first_try = longest_rests[-1][0]
-    num_voices_resting = 0
-    # for i in range(len(longest_rests)-1):
-    #     if longest_rests[i][0] == first_try:
-    #         result += 1
-    # if result > 
 
-    # for i in range(len(longest_rests)-1,-1,-1):
-    #     if longest_rests[i][1] < 5000:
-    #         longest_rests.remove(longest_rests[i])
-
-    # #rests has same len as voices
-    # c = i.combinations(rests,3)
-    # combos = [elem for elem in c]
-    # print combos[1]
-    # # print type(combos)
-    # # print len(combos)
-    # # for i in range(1000,1000000,1000):
-    # #     for combo_of_rests in combos:
-    # #         result = 0
-    # #         for i in range(3):
-    # #             for 
 
 
 
